@@ -1,6 +1,6 @@
 const Koa = require('koa');
 const app = new Koa();
-const views = require('koa-views');
+const views = require('koa-views'); // 动态模板渲染引擎
 const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
@@ -20,6 +20,7 @@ app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'));
 
+// 会对 context 注入 render 方法
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }));

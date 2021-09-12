@@ -16,7 +16,7 @@ const users = require('./routes/users');
 onerror(app);
 
 // middlewares
-app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] })); // // 解析post数据
+app.use( bodyparser({ enableTypes: ['json', 'form', 'text'] })); // // 解析post数据
 app.use(json());
 app.use(logger()); // 打印日志
 app.use(require('koa-static')(__dirname + '/public')); // 静态化资源 可以通过地址访问public下文件
@@ -27,8 +27,8 @@ app.use(views(__dirname + '/views', { extension: 'ejs' }));
 app.keys = ['server-koa-key']; // 设置签名的 Cookie 密钥
 
 app.use(session({
-  key: 'koaweibo.sid', // cookie name 默认'koa.sid'
-  prefix: 'koaweibo:sess:', // redis key 的前缀，默认'koa:sess:'
+  key: 'weibo.sid', // cookie name 默认'koa.sid'
+  prefix: 'weibo:sess:', // redis key 的前缀，默认'koa:sess:'
   cookie: {
     path: '/', // 生成的 cookie 在整个网站都可以访问
     httpOnly: true, // 仅允许在 session 端修改，客户端不允许

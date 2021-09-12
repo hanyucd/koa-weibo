@@ -8,12 +8,13 @@ const logger = require('koa-logger');
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
 const { redis: redisConfig } = require('./config');
-
-const index = require('./routes/index');
-const users = require('./routes/users');
+const routes = require('./routes');
 
 // error handler
-onerror(app);
+let onErrorConfig = {
+  redirect: '/error'
+};
+onerror(app, onErrorConfig);
 
 // middlewares
 app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] })); // // 解析post数据
@@ -48,11 +49,8 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
-// routes
-app.use(index.routes(), index.allowedMethods());
-app.use(users.routes(), users.allowedMethods());
-
-// console.log(process.env);
+// routes 注册路由
+routes(app);
 
 // error-handling
 app.on('error', (err, ctx) => {

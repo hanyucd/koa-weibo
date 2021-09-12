@@ -1,25 +1,14 @@
 const Router = require('@koa/router');
 const router = new Router({ prefix: '' });
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  });
-});
+const errorViewRoute = require('./view/error');
+const userApiRoute = require('./api/userRoute');
 
-router.get('/json', async (ctx, next) => {
-  const session = ctx.session;
-  console.log(session);
-  
-  if (!session.viewCount) {
-    session.viewCount = 0;
-  }
-  session.viewCount++;
-  
-  ctx.body = {
-    title: 'koa2 json',
-    viewCount: session.viewCount
-  };
-});
+module.exports = app => {
+  app.use(errorViewRoute.routes(), errorViewRoute.allowedMethods());
 
-module.exports = router;
+  app.use(userApiRoute.routes(), userApiRoute.allowedMethods());
+
+  // 加载路由中间件
+  // app.use(router.routes()).use(router.allowedMethods());
+};

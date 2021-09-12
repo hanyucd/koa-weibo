@@ -7,13 +7,18 @@ router.get('/', async (ctx, next) => {
   });
 });
 
-router.get('/string', async (ctx, next) => {
-  ctx.body = 'koa2 string';
-});
-
 router.get('/json', async (ctx, next) => {
+  const session = ctx.session;
+  console.log(session);
+  
+  if (!session.viewCount) {
+    session.viewCount = 0;
+  }
+  session.viewCount++;
+  
   ctx.body = {
-    title: 'koa2 json'
+    title: 'koa2 json',
+    viewCount: session.viewCount
   };
 });
 

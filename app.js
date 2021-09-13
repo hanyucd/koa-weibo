@@ -10,6 +10,8 @@ const redisStore = require('koa-redis');
 const { redis: redisConfig } = require('./config');
 const routes = require('./routes');
 
+require('./model');
+
 // error handler
 let onErrorConfig = {
   redirect: '/error'

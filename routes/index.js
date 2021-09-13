@@ -1,7 +1,7 @@
 const Router = require('@koa/router');
 const router = new Router();
 
-const errorViewRoute = require('./view/error');
+const errorViewRoute = require('./view/errorRoute');
 const userApiRoute = require('./api/userRoute');
 
 module.exports = app => {

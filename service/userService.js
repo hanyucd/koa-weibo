@@ -1,7 +1,7 @@
 const { userModel } = require('../model');
+const formatUtil = require('../utils/formatUtil');
 
-class UserService {
-  
+class UserService {  
   /**
    * 获取用户信息
    * @param {String} userName 用户名
@@ -9,7 +9,6 @@ class UserService {
    */
   async getUserInfo(userName, password) {
     let queryObj = { userName };
-
     if (password) queryObj = { ...queryObj, password };
 
     const queryRes = await userModel.findOne({
@@ -17,9 +16,11 @@ class UserService {
       attributes: ['id', 'userName', 'nickName', 'picture', 'gender', 'city']
     });
 
+    // console.log('queryRes', queryRes);
     if (!queryRes) return null;
 
-    return queryRes;
+    // return queryRes;
+    return formatUtil.formatUser(queryRes);
   }
 }
 

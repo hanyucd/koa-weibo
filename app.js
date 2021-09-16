@@ -28,7 +28,6 @@ app.use(require('koa-static')(__dirname + '/public')); // 静态化资源 可以
 app.use(views(__dirname + '/views', { extension: 'ejs' }));
 
 app.keys = ['server-koa-key']; // 设置签名的 Cookie 密钥
-
 app.use(session({
   key: 'weibo.sid', // cookie name 默认'koa.sid'
   prefix: 'weibo:sess:', // redis key 的前缀，默认'koa:sess:'

@@ -7,3 +7,127 @@ koa + ejs + redis + mysql + sequelize
 - koa 脚手架工具：koa-generator
 - koa-generic-session +  koa-redis session 会话操作
 - jest 单元测试
+- 项目结构 MVC
+
+## Sequelize(ORM) 连接 MySQL
+
+```js
+// db/index.js
+
+const { Sequelize } = require('sequelize');
+const { mysql: mysqlConfig } = require('../config');
+
+const sequelize = new Sequelize(
+  mysqlConfig.dbName,
+  mysqlConfig.user,
+  mysqlConfig.password,
+  {
+    host: mysqlConfig.host,
+    port: mysqlConfig.port,
+    dialect: 'mysql', // 连接的数据库类型
+    logging: true, // 建议开启, 方便对照生成的 sql 语句
+    timezone: '+08:00', // 时区, 不设置会与北京相差 8 小时
+    pool: {
+      max: 5, // 连接池中最大连接数量
+      min: 0, // 最小
+      idle: 10000 // 如果一个连接池 10s 之内没有被使用，则释放
+    },
+    // 定义 模型默认选项
+    define: {
+      timestamps: true, // 模型添加 createdAt 和 updatedAt 两个时间戳字段
+      createdAt: 'create_time', // create_time 代替 createdAt 列的默认名
+      updatedAt: 'update_time', // update_time 代替 updatedAt 列的默认名
+      freezeTableName: true, // 强制表名称等于模型名称
+      underscored: true, // 转换列名的驼峰命名规则为下划线命令规则
+    }
+  }
+);
+
+// 同步模型到数据库 sync 方法如果配置 { force: true }时，判断数据库是否有该表，如果有则会删除表，再重建。
+sequelize.sync({
+  // force: true,
+  force: false,
+  alter: true, // 检查数据库中表的当前状态 更新数据库表结构
+});
+
+module.exports = sequelize;
+```
+
+## redis连接
+
+```js
+// db/redis.js
+
+const redis = require('redis');
+const { redis: redisConfig } = require('../config');
+// 创建客户端
+const redisClient = redis.createClient({ host: redisConfig.host, port: redisConfig.port });
+
+// 当连接上 redis 服务时，会尽可能快地触发一个connect事件
+redisClient.on('connect', function() {
+  console.log('Redis client is connected to the Server!');
+});
+
+// 当遇到连接到Redis服务器错误，或在node_redis中出现的任何其他错误时，client将触发error事件
+redisClient.on('error', error => {
+  console.error(error);
+});
+
+/**
+ * redis set
+ * @param {String} key 
+ * @param {String} value 
+ * @param {Number} timeout 过期时间单位 s 默认 1h
+ */
+const redisSet = (key, value, timeout = 60 * 60) => {
+  if (typeof value === 'object') {
+    value = JSON.stringify(value);
+  }
+  redisClient.set(key, value);
+  redisClient.expire(key, timeout); // 过期时间
+};
+
+/**
+ * redis get
+ * @param {String} key 
+ */
+const redisGet = key => {
+  return new Promise((resolve, reject) => {
+    redisClient.get(key, (error, res) => {
+      if (error) return reject(error);
+
+      if (res == null) return resolve(null);
+
+      try {
+        resolve(JSON.parse(res));
+      } catch (err) {
+        resolve(res);
+      }
+    });
+  });
+};
+
+module.exports = { redisSet, redisGet };
+```
+
+
+## session
+
+```js
+// app.js
+
+app.keys = ['server-koa-key']; // 设置签名的 Cookie 密钥
+app.use(session({
+  key: 'weibo.sid', // cookie name 默认'koa.sid'
+  prefix: 'weibo:sess:', // redis key 的前缀，默认'koa:sess:'
+  cookie: {
+    path: '/', // 生成的 cookie 在整个网站都可以访问
+    httpOnly: true, // 仅允许在 session 端修改，客户端不允许
+    maxAge: 24 * 60 * 60 * 1000 // cookie过期时间 一天 ms
+  },
+  // ttl: 24 * 60 * 60 * 1000, // redis 过期时间 session工具默认 maxAge 时间，不需要手动添加
+  store: redisStore({
+    all: `${ redisConfig.host }:${ redisConfig.port }`
+  })
+}));
+```

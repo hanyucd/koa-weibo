@@ -19,8 +19,25 @@ class UserService {
     // console.log('queryRes', queryRes);
     if (!queryRes) return null;
 
-    // return queryRes;
     return formatUtil.formatUser(queryRes);
+  }
+
+  /**
+   * 创建用户
+   * @param {Object} userInfo
+   */
+  async createUser(userInfo) {
+    const { userName, password, gender, nickName } = userInfo;
+
+    const userResult = await userModel.create({
+      userName,
+      password,
+      gender,
+      nickName: nickName || '三眼神将'
+    });
+    
+    console.log('新用户 id', userResult.id);
+    return userResult.toJSON();
   }
 }
 

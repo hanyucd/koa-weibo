@@ -6,7 +6,7 @@ class BaseController {
   /**
    * 处理成功响应
    */
-  resSuccess(ctx, data) {
+  resSuccess(ctx, data = {}) {
     ctx.body = { data, ...resSuccess };
   }
 

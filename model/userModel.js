@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
+const passwdUtil = require('../utils/passwdUtil');
 
 class User extends Model {}
 
@@ -14,7 +15,12 @@ User.init({
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '密码'
+    comment: '密码',
+    // 设置器
+    set(value) {
+      const _encryptPsd = passwdUtil.encrypt(value); // 密码加密
+      this.setDataValue('password', _encryptPsd);
+    }
   },
   nickName: {
     type: DataTypes.STRING,

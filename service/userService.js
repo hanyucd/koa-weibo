@@ -33,7 +33,7 @@ class UserService {
       userName,
       password,
       gender,
-      nickName: nickName || '三眼神将'
+      nickName: nickName || '_三眼神将'
     });
     
     console.log('新用户 id', userResult.id);

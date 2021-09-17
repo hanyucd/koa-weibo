@@ -131,3 +131,58 @@ app.use(session({
   })
 }));
 ```
+
+## 密码加密存储
+
+使用 crypto-js 中的 AES 对称加密算法
+
+```js
+// utils/passwdUtil.js
+
+const CryptoJS = require('crypto-js');
+const secret_Key = 'vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3';
+
+/**
+ * 密码加密
+ * @param {String} passwd 
+ */
+const encrypt = passwd => {
+  // Encrypt
+  const ciphertext = CryptoJS.AES.encrypt(passwd, secret_Key);
+  return ciphertext.toString();
+};
+
+/**
+ * 密码解密
+ * @param {*} ciphertext 
+ * @returns 
+ */
+const decrypt = ciphertext => {
+  // Decrypt
+  const bytes = CryptoJS.AES.decrypt(ciphertext.toString(), secret_Key);
+  const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+  return plaintext;
+};
+
+module.exports = {
+  encrypt,
+  decrypt
+};
+```
+先在 userModel 中引入 passwdUtil 工具函数，然后在模型的 password 字段添加 set 设置器，(在 Sequelize 在将数据发送到数据库之前自动调用了设置器)
+```js
+// model/userModel.js
+const passwdUtil = require('../utils/passwdUtil');
+
+// 在
+password: {
+  type: DataTypes.STRING,
+  allowNull: false,
+  comment: '密码',
+  // 设置器
+  set(value) {
+    const _encryptPsd = passwdUtil.encrypt(value); // 密码加密
+    this.setDataValue('password', _encryptPsd);
+  }
+}
+```

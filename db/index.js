@@ -29,8 +29,8 @@ const sequelize = new Sequelize(
 
 // 同步模型到数据库 sync 方法如果配置 { force: true }时，判断数据库是否有该表，如果有则会删除表，再重建。
 sequelize.sync({
-  force: true,
-  // force: false,
+  // force: true,
+  force: false,
   alter: true, // 检查数据库中表的当前状态 更新数据库表结构
 });
 

@@ -11,7 +11,7 @@ const validateMiddleware = validateFn => {
 
     // 校验 validateFn 成功的话没有返回值
     const error = validateFn(data);
-    console.log('error:', error);
+    // console.log('error:', error);
     // 不存在错误对象，验证通过，继续下一步
     if (!error) return await next();
 

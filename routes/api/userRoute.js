@@ -8,5 +8,7 @@ const userController = require('../../controller/userController');
 router.post('/isExist', userController.isExist);
 // 用户注册
 router.post('/register', validateMiddleware(userValidate), userController.userRegister);
+// 用户登录
+router.post('/login', userController.login);
 
 module.exports = router;

@@ -24,7 +24,6 @@ class UserController extends BaseController {
    * @param {String} userName
    * @param {String} password
    * @param {number} gender
-   * @returns
    */
   async userRegister(ctx) {
     const { userName, password, gender = 3 } = ctx.request.body;
@@ -39,6 +38,17 @@ class UserController extends BaseController {
       console.log(error.message, error.stack);
       return super.resFail(ctx, codeMsg.registerFailError);
     }
+  }
+
+  /**
+   * 用户登录
+   * @param {Object} ctx 当前上下文
+   * @param {String} userName
+   * @param {String} password
+   */
+  async login(ctx) {
+    const { userName, password } = ctx.request.body;
+    const user = userService.login(userName, password);
   }
 }
 

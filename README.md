@@ -8,6 +8,8 @@ koa + ejs + redis + mysql + sequelize
 - koa-generic-session +  koa-redis session 会话操作
 - jest 单元测试
 - 项目结构 MVC
+- koa 获取 post 参数 (安装 koa-bodyparser 插件, 通过 ctx.request.body 获取参数)
+- ajv (Node.js和浏览器中最快速的 JSON Schema验证器)
 
 ## Sequelize(ORM) 连接 MySQL
 
@@ -173,7 +175,7 @@ module.exports = {
 // model/userModel.js
 const passwdUtil = require('../utils/passwdUtil');
 
-// 在
+// 在设置器中添加密码加密
 password: {
   type: DataTypes.STRING,
   allowNull: false,

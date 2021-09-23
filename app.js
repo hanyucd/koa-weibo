@@ -19,7 +19,7 @@ let onErrorConfig = {
 onerror(app, onErrorConfig);
 
 // middlewares
-app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] })); // // 解析post数据
+app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] })); // 解析 post 数据
 app.use(json());
 app.use(logger()); // 打印日志
 app.use(require('koa-static')(__dirname + '/public')); // 静态化资源 可以通过地址访问public下文件

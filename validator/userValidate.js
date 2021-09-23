@@ -42,8 +42,8 @@ const SCHEMA = {
 };
 
 // 校验用户数据格式
-const validateUser = (data = {}) => {
+const userValidate = (data = {}) => {
   return validate(SCHEMA, data);
 };
 
-module.exports = validateUser;
+module.exports = userValidate;

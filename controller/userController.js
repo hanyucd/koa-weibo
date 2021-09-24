@@ -48,7 +48,13 @@ class UserController extends BaseController {
    */
   async login(ctx) {
     const { userName, password } = ctx.request.body;
-    const user = userService.login(userName, password);
+    const resResult = await userService.login(userName, password);
+
+    console.log(resResult)
+
+    if (!resResult.status) return super.resFail(ctx, resResult.resMsg);
+
+    // ctx.body = { userName, password };
   }
 }
 

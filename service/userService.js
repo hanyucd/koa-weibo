@@ -1,5 +1,6 @@
 const { userModel } = require('../model');
 const formatUtil = require('../utils/formatUtil');
+const codeMsg = require('../config/codeMsg');
 
 class UserService {  
   /**
@@ -26,8 +27,9 @@ class UserService {
    * 登录
    */
   async login(userName, password) {
-    const user = userModel.findOne({ userName });
-    if (!user) return 
+    const user = await userModel.findOne({ where: { userName } });
+    console.log(user)
+    if (!user) return { status: false, resMsg: codeMsg.userNameNotExistError }
   }
 
   /**

@@ -48,11 +48,19 @@ class UserController extends BaseController {
    */
   async login(ctx) {
     const { userName, password } = ctx.request.body;
-    const resResult = await userService.login(userName, password);
+    try {
+      const userResult = await userService.login(userName, password);
+      // console.log('server结果:', userResult);
+      if (!userResult.status) return super.resFail(ctx, resResult.resMsg);
 
-    console.log(resResult)
-
-    if (!resResult.status) return super.resFail(ctx, resResult.resMsg);
+      if (ctx.session == null || ctx.session.userInfo == null) {
+        ctx.session.userInfo = userResult.resResult;
+      }
+      super.resSuccess(ctx);
+    } catch (error) {
+      console.log('error', error);
+      super.resFail(ctx, codeMsg.loginFailError);
+    }
 
     // ctx.body = { userName, password };
   }

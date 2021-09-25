@@ -1,5 +1,6 @@
 const { userModel } = require('../model');
 const formatUtil = require('../utils/formatUtil');
+const passwdUtil = require('../utils/passwdUtil');
 const codeMsg = require('../config/codeMsg');
 
 class UserService {  
@@ -27,9 +28,16 @@ class UserService {
    * 登录
    */
   async login(userName, password) {
-    const user = await userModel.findOne({ where: { userName } });
-    console.log(user)
-    if (!user) return { status: false, resMsg: codeMsg.userNameNotExistError }
+    const user = await userModel.findOne({
+      where: { userName },
+    });
+    // 用户不存在
+    if (!user) return { status: false, resMsg: codeMsg.userNameNotExistError };
+    // 解密比较
+    const decryptPasswrod = passwdUtil.decrypt(user.password);
+    if (decryptPasswrod !== password) return { status: false, resMsg: codeMsg.passwordError }
+    
+    return { status: true, resResult: formatUtil.formatUser(user) };
   }
 
   /**

@@ -33,7 +33,7 @@ class UserService {
     });
     // 用户不存在
     if (!user) return { status: false, resMsg: codeMsg.userNameNotExistError };
-    // 解密比较
+    // 密码解密比较
     const decryptPasswrod = passwdUtil.decrypt(user.password);
     if (decryptPasswrod !== password) return { status: false, resMsg: codeMsg.passwordError }
     

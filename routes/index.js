@@ -7,6 +7,7 @@ const blogViewRoute = require('./view/blogViewRoute');
 const userApiRoute = require('./api/userRoute');
 
 module.exports = app => {
+  // router.use 使用给定的中间件，当且仅当路由匹配
   router.use(userViewRoute.routes());
   router.use(blogViewRoute.routes());
   router.use(errorViewRoute.routes());

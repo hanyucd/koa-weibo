@@ -1,6 +1,8 @@
 const Router = require('@koa/router');
 const router = new Router();
 
+const { loginRedirect }  = require('../../middleware/loginCheckMiddleware');
+
 /**
  * 获取登录信息
  */
@@ -17,12 +19,19 @@ const _getLoginInfo = ctx => {
   return data;
 };
 
+// 注册
 router.get('/register', async (ctx, next) => {
   await ctx.render('register', _getLoginInfo(ctx));
 });
 
+// 登录
 router.get('/login', async (ctx, next) => {
   await ctx.render('login', _getLoginInfo(ctx));
+});
+
+// 设置页面
+router.get('/setting', loginRedirect, async (ctx, next) => {
+  await ctx.render('setting', ctx.session.userInfo);
 });
 
 module.exports = router;

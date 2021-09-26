@@ -13,5 +13,9 @@ router.post('/register', validateMiddleware(userValidate), userController.userRe
 router.post('/login', userController.login);
 // 更新用户信息
 router.patch('/changeInfo', loginCheck, validateMiddleware(userValidate), userController.changeUserInfo);
+// 更新用户密码
+router.patch('/changePassword', loginCheck, validateMiddleware(userValidate), userController.changeUserPassword);
+// 退出登录
+router.post('/logout', loginCheck, userController.logout);
 
 module.exports = router;

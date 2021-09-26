@@ -68,7 +68,7 @@ class UserController extends BaseController {
    */
   async changeUserInfo(ctx, next) {
     const { nickName, city, picture } = ctx.request.body;
-    console.log(ctx.session.userInfo)
+    // console.log(ctx.session.userInfo)
     const { userName } = ctx.session.userInfo;
     if (!nickName) nickName = userName;
 
@@ -77,6 +77,27 @@ class UserController extends BaseController {
     if (!result) return super.resFail(ctx, codeMsg.updateUserInfoError);
     // 修改用户 session
     ctx.session.userInfo = { ...ctx.session.userInfo, nickName, city, picture };
+    super.resSuccess(ctx);
+  }
+
+  /**
+   * 更新用户密码
+   */
+  async changeUserPassword(ctx, next) {
+    const { newPassword, password } = ctx.request.body;
+    const { userName } = ctx.session.userInfo;
+    const result = await userService.updateUser({ newPassword }, { userName, password });
+    // 更新用户信息失败
+    if (!result) return super.resFail(ctx, codeMsg.updateUserPasswordError);
+    super.resSuccess(ctx);
+  }
+
+  /**
+   * 退出登录
+   */
+  async logout(ctx) {
+    // 移除 session
+    delete ctx.session.userInfo;
     super.resSuccess(ctx);
   }
 }

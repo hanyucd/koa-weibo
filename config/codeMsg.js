@@ -1,5 +1,7 @@
 module.exports = {
   resSuccess: { code: 0, message: '' }, // 成功
+  // 参数校验不通过
+  jsonSchemaValidateError: { code: 1, message: '参数格式校验不通过 请检查' },
   // 用户名已存在
   userNameIsExistError: { code: 10001, message: '用户名已存在 请检查', },
   // 注册失败
@@ -16,6 +18,6 @@ module.exports = {
   uploadFileSizeTooBigError: { code: 10007, message: '上传文件尺寸过大' },
   // 更新用户信息错误
   updateUserInfoError: { code: 10008, message: '修改基本信息失败', },
-  // 参数校验不通过
-  jsonSchemaValidateError: { code: 10009, message: '参数格式校验不通过 请检查' },
+  // 更新用户密码错误
+  updateUserPasswordError: { code: 10009, messgae: '修改密码失败', },
 };

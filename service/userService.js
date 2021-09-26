@@ -67,7 +67,7 @@ class UserService {
     let updateObj = {}; // 更新内容
     let whereObj = { userName }; // 查询条件
     // 有密码则添加
-    password && (whereObj.password = password);
+    // password && (whereObj.password = password);
     // 添加更新内容
     newNickName && (updateObj.nickName = newNickName);
     newPicture && (updateObj.picture = newPicture);

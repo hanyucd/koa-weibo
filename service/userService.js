@@ -57,6 +57,27 @@ class UserService {
     console.log('新用户 id', userResult.id);
     return userResult.toJSON();
   }
+
+  /**
+   * 更新用户信息
+   * @param {object} param0  要修改的内容
+   * @param {object} param1 原来的内容
+   */
+  async updateUser({ newNickName, newPicture, newCity, newPassword }, { userName, password }) {
+    let updateObj = {}; // 更新内容
+    let whereObj = { userName }; // 查询条件
+    // 有密码则添加
+    password && (whereObj.password = password);
+    // 添加更新内容
+    newNickName && (updateObj.nickName = newNickName);
+    newPicture && (updateObj.picture = newPicture);
+    newCity && (updateObj.city = newCity);
+    newPassword && (updateObj.password = newPassword);
+    // 更新用户记录信息
+    const updateResult = await userModel.update(updateObj, { where: whereObj });
+    // console.log('更新结果:', updateResult);
+    return updateResult[0] > 0;
+  }
 }
 
 module.exports = new UserService();

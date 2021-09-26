@@ -14,6 +14,8 @@ module.exports = {
   loginCheckFailError: { code: 10006, message: '当前未登录', },
   // 文件过大
   uploadFileSizeTooBigError: { code: 10007, message: '上传文件尺寸过大' },
+  // 更新用户信息错误
+  updateUserInfoError: { code: 10008, message: '修改基本信息失败', },
   // 参数校验不通过
   jsonSchemaValidateError: { code: 10009, message: '参数格式校验不通过 请检查' },
 };

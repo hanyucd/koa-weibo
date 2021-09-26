@@ -61,8 +61,23 @@ class UserController extends BaseController {
       console.log('error', error);
       super.resFail(ctx, codeMsg.loginFailError);
     }
+  }
 
-    // ctx.body = { userName, password };
+  /**
+   * 更新用户信息
+   */
+  async changeUserInfo(ctx, next) {
+    const { nickName, city, picture } = ctx.request.body;
+    console.log(ctx.session.userInfo)
+    const { userName } = ctx.session.userInfo;
+    if (!nickName) nickName = userName;
+
+    const result = await userService.updateUser({ newNickName: nickName, newCity: city, newPicture: picture }, { userName });
+    // 更新用户信息失败
+    if (!result) return super.resFail(ctx, codeMsg.updateUserInfoError);
+    // 修改用户 session
+    ctx.session.userInfo = { ...ctx.session.userInfo, nickName, city, picture };
+    super.resSuccess(ctx);
   }
 }
 

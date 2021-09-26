@@ -7,6 +7,7 @@ const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+const path = require('path');
 const { redis: redisConfig } = require('./config');
 const routes = require('./routes');
 
@@ -23,6 +24,7 @@ app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] })); // 解析 post �
 app.use(json());
 app.use(logger()); // 打印日志
 app.use(require('koa-static')(__dirname + '/public')); // 静态化资源 可以通过地址访问public下文件
+app.use(require('koa-static')(path.join(__dirname, 'uploadFiles'))); // 静态化资源 可以通过地址访问 uploadFiles 下文件
 
 // 注册 ejs 会对 context 注入 render 方法
 app.use(views(__dirname + '/views', { extension: 'ejs' }));

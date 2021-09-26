@@ -10,6 +10,7 @@ koa + ejs + redis + mysql + sequelize
 - 项目结构 MVC
 - koa 获取 post 参数 (安装 koa-bodyparser 插件, 通过 ctx.request.body 获取参数)
 - ajv (Node.js和浏览器中最快速的 JSON Schema验证器)
+- 文件上传 file（formidable-upload-koa & fs-extra ）
 
 ## Sequelize(ORM) 连接 MySQL
 

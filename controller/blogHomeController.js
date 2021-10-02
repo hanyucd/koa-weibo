@@ -14,7 +14,7 @@ class BlogHomeController extends BaseController {
    */
   async createBlog(ctx) {
     const { content, image } = ctx.request.body;
-    const { id: userId } = ctx.session.userInfo
+    const { id: userId } = ctx.session.userInfo;
 
     try {
       const blog = await blogService.createBlog({

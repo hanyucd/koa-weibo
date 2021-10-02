@@ -1,6 +1,8 @@
 const BaseController = require('./baseController');
 const blogService = require('../service/blogService');
 const codeMsg = require('../config/codeMsg');
+const blogValidate = require('../validator/blogValidate');
+const xss = require('xss');
 
 class BlogHomeController extends BaseController {
   constructor() {
@@ -16,7 +18,7 @@ class BlogHomeController extends BaseController {
 
     try {
       const blog = await blogService.createBlog({
-        userId, content, image
+        userId, content: xss(content), image
       });
 
       super.resSuccess(ctx);

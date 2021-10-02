@@ -20,4 +20,9 @@ module.exports = {
   updateUserInfoError: { code: 10008, message: '修改基本信息失败', },
   // 更新用户密码错误
   updateUserPasswordError: { code: 10009, messgae: '修改密码失败', },
+
+  // 创建微博失败
+  createBlogError: { code: 11001, message: '创建微博失败，请重试', },
+  // 删除微博失败
+  deleteBlogError: { code: 11002, message: '删除微博失败，请重试', },
 };

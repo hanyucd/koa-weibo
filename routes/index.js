@@ -8,6 +8,7 @@ const blogViewRoute = require('./view/blogViewRoute');
 // api
 const userApiRoute = require('./api/userRoute');
 const utilApiRoute = require('./api/utilRoute');
+const blogHomeRoute = require('./api/blogHomeRoute');
 
 module.exports = app => {
   // router.use 使用给定的中间件，当且仅当路由匹配
@@ -17,6 +18,7 @@ module.exports = app => {
 
   router.use(userApiRoute.routes());
   router.use(utilApiRoute.routes());
+  router.use(blogHomeRoute.routes());
 
   // 加载路由中间件
   app.use(router.routes()).use(router.allowedMethods());

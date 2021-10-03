@@ -13,6 +13,7 @@
     "@koa/router": "^10.1.1",
     "ajv": "^8.6.3",
     "crypto-js": "^4.1.1",
+    "date-fns": "^2.24.0",
     "debug": "^4.1.1",
     "ejs": "~2.3.3",
     "formidable-upload-koa": "^1.0.1",

@@ -47,16 +47,16 @@ class blogService {
 
     // result.count 总数，跟分页无关
     // result.rows 查询结果，数组
-    // console.log(result.rows)
 
     let blogList = result.rows.map(row => row.dataValues);
-    // let blogList = [];
 
     blogList = blogList.map(blogItem => {
       const user = blogItem.user.dataValues;
       blogItem.user = formatUtil.formatUser(user);
       return blogItem;
     });
+
+    blogList = formatUtil.fromateBlog(blogList);
     console.log('blogList:', blogList);
 
     return {

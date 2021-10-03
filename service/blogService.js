@@ -43,14 +43,16 @@ class blogService {
       offset: PAGE_SIZE * pageIndex, // 跳过多少条
       limit: PAGE_SIZE, // 每页多少条
     });
-    console.log('result:', result);
+    // console.log('result:', result);
 
     // result.count 总数，跟分页无关
     // result.rows 查询结果，数组
+    // console.log(result.rows)
 
     let blogList = result.rows.map(row => row.dataValues);
+    // let blogList = [];
 
-    blogList = map(blogItem => {
+    blogList = blogList.map(blogItem => {
       const user = blogItem.user.dataValues;
       blogItem.user = formatUtil.formatUser(user);
       return blogItem;

@@ -17,6 +17,7 @@ require('./model');
 let onErrorConfig = {
   redirect: '/error'
 };
+// 全局错误处理中间件：发生错误，则重定向到 /error
 onerror(app, onErrorConfig);
 
 // middlewares

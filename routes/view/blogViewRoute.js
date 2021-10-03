@@ -31,9 +31,13 @@ router.get('/profile', loginRedirect, async (ctx, next) => {
  * 访问个人主页
  */
 router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
+  console.log('params', ctx.params)
   const myUserInfo = ctx.session.userInfo; // 我自己
   const { userName: curUserName } = ctx.params; // ta 人用户名
   const isMe = curUserName === myUserInfo.userName;
+  console.log('curUserName:', curUserName);
+  // console.log('myUserInfo', myUserInfo.userName);
+
   // 获取第一页的数据
   const blogResult = await blogService.getBlogListByUser(curUserName);
   const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult;

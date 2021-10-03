@@ -1,6 +1,6 @@
 const { blogModel, userModel } = require('../model');
 const formatUtil = require('../utils/formatUtil');
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 5; // 一页数据
 
 class blogService {
   /**
@@ -25,7 +25,7 @@ class blogService {
    * @param {*} userName 
    * @param {*} pageIndex 
    */
-  async getBlogListByUser(userName, pageIndex = 0) {
+  async getBlogListByUser({ userName = '', pageIndex = 0 }) {
     // 拼接查询条件
     let userWhereObj = {};
     if (userName) userWhereObj.userName = userName;
@@ -38,7 +38,7 @@ class blogService {
           where: userWhereObj // inner join
         }
       ],
-      order: [['id', 'desc']], // id 倒序
+      order: [['create_time', 'desc']], // 创建时间 倒序
       offset: PAGE_SIZE * pageIndex, // 跳过多少条
       limit: PAGE_SIZE, // 每页多少条
     });

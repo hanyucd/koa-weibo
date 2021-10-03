@@ -15,7 +15,7 @@ class BlogProfileController extends BaseController {
     let { userName, pageIndex } = ctx.params;
     pageIndex = parseInt(pageIndex);
     // 查询数据
-    let blogResult = await blogService.getBlogListByUser(userName, pageIndex);
+    let blogResult = await blogService.getBlogListByUser({ userName, pageIndex });
     
     blogResult.blogListTpl = getBlogListStr(blogResult.blogList);
     super.resSuccess(ctx, blogResult)

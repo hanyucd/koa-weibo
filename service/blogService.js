@@ -81,7 +81,7 @@ class blogService {
         {
           model: userRelationModel,
           attributes: ['userId', 'followerId'],
-          // where: { userId }
+          where: { userId }
         }
       ]
     });

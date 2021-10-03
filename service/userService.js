@@ -17,8 +17,8 @@ class UserService {
       where: queryObj,
       attributes: ['id', 'userName', 'nickName', 'picture', 'gender', 'city']
     });
+    // console.log('queryRes', queryRes);
 
-    console.log('queryRes', queryRes);
     if (!queryRes) return null;
 
     return formatUtil.formatUser(queryRes);

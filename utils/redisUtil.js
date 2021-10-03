@@ -15,8 +15,8 @@ const getSquareCacheList = async pageIndex => {
 
   // 没有缓存，则先读取数据库
   const blogResult = await blogService.getBlogListByUser({ pageIndex });
-  // 设置缓存 key 为上面的 key value为获取回来的值 缓存时间为 120 秒
   console.log('数据库查询有值:', Boolean(blogResult));
+  // 设置缓存 key 为上面的 key value为获取回来的值 缓存时间为 120 秒
   redisSet(cacheKey, blogResult, 60 * 2);
   return blogResult;
 };

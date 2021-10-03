@@ -2,6 +2,8 @@ const Router = require('@koa/router');
 const { loginRedirect }  = require('../../middleware/loginCheckMiddleware');
 const blogService = require('../../service/blogService');
 const blogSquareController = require('../../controller/blogSquareController');
+const userRelationController = require('../../controller/userRelationController');
+const userService = require('../../service/userService');
 const router = new Router();
 
 /**
@@ -36,9 +38,26 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   const { userName: curUserName } = ctx.params; // ta 人用户名
   const isMe = curUserName === myUserInfo.userName;
 
+  let curUserInfo;
+  if (isMe) {
+    curUserInfo = myUserInfo;
+  } else {
+    // 先查询 ta 人的用户信息
+    const existUserInfo = await userService.getUserInfo(curUserName);
+    if (!existUserInfo) return;
+    curUserInfo = existUserInfo;
+  }
+
   // 获取第一页的数据
   const blogResult = await blogService.getBlogListByUser({ userName: curUserName });
   const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult;
+  
+  // 获取粉丝列表
+  const fansResult = await userRelationController.getFans(curUserInfo.id);
+  const { count: fansCount, userList: fansList } = fansResult;
+  
+  // ctx.body = { fansResult };
+  // return;
   
   await ctx.render('profile', {
     blogData: {
@@ -51,6 +70,14 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     userData: {
       userInfo: myUserInfo,
       isMe,
+      fansData: {
+        count: fansCount,
+        list: fansList
+      },
+      followersData: {
+        count: 0,
+        list: []
+      },
     }
   })
 });

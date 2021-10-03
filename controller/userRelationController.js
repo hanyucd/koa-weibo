@@ -15,6 +15,14 @@ class userRelationController extends BaseController {
     const { count, userList } = await userRelationService.getUsersByFollower(userId);
     return { count, userList };
   }
+
+  /**
+   * 根据 用户id 获取用户所有关注的人
+   */
+  async getFollowers(userId) {
+    const { count, followList } = await userRelationService.getFollowersByUser(userId);
+    return { count, followList };
+  }
 }
 
 module.exports = new userRelationController();

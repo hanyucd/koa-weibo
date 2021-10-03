@@ -38,7 +38,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   const { userName: curUserName } = ctx.params; // ta 人用户名
   const isMe = curUserName === myUserInfo.userName;
 
-  let curUserInfo;
+  let curUserInfo; // 当前所访问的用户信息
   if (isMe) {
     curUserInfo = myUserInfo;
   } else {
@@ -55,6 +55,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   // 获取粉丝列表
   const fansResult = await userRelationController.getFans(curUserInfo.id);
   const { count: fansCount, userList: fansList } = fansResult;
+  
+  // 获取关注列表
+  const followerResult = await userRelationController.getFollowers(curUserInfo.id);
+  const { count: followerCount, followList: followerList } = followerResult;
   
   // ctx.body = { fansResult };
   // return;
@@ -75,15 +79,15 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     userData: {
       userInfo: curUserInfo,
       isMe,
+      amIFollowed,
       fansData: {
         count: fansCount,
         list: fansList
       },
       followersData: {
-        count: 0,
-        list: []
-      },
-      amIFollowed
+        count: followerCount,
+        list: followerList
+      }
     }
   })
 });

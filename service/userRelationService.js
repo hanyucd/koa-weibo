@@ -8,7 +8,7 @@ class userRelationService {
    * @param {number} followerId 被关注人的 id
    */
   async getUsersByFollower(followerId) {
-    const flllowerResult = await userModel.findAndCountAll({
+    const fansResult = await userModel.findAndCountAll({
       attributes: ['id', 'userName', 'nickName', 'picture'],
       include: [
         {
@@ -26,13 +26,46 @@ class userRelationService {
     });
     // result.count 总数
     // result.rows 查询结果，数组
-    // console.log('关注者结果:', flllowerResult);
+    // console.log('关注者结果:', fansResult);
 
     // 格式化
-    let userList = flllowerResult.rows.map(row => row.dataValues)
+    let userList = fansResult.rows.map(row => row.dataValues)
     userList = formatUtil.formatUser(userList)
 
-    return { count: flllowerResult.count, userList };
+    return { count: fansResult.count, userList };
+  }
+
+  /**
+   * 获取关注人列表
+   * @param {number} userId userId
+   */
+  async getFollowersByUser(userId) {
+    const followerResult = await userRelationModel.findAndCountAll({
+      where: {
+        userId,
+        followerId: { [Op.ne]: userId }
+      },
+      include: [
+        {
+          model: userModel,
+          attributes: ['nickName', 'userName', 'picture', 'gender'],
+        }
+      ],
+      order: [
+        [ 'create_time', 'desc' ]
+      ],
+    });
+    // console.log('followerResult:', followerResult);
+
+
+    let followerList = followerResult.rows.map(row => row.dataValues);
+    followerList = followerList.map(item => {
+      let user = item.user.dataValues;
+      user = formatUtil.formatUser(user);
+      return user;
+    });
+
+    return { count: followerResult.count, followList: followerList };
   }
 
   // 添加关注关系
@@ -54,7 +87,7 @@ class userRelationService {
         followerId
       }
     });
-    console.log('删除:', destroy);
+    // console.log('删除:', destroy);
     return destroy;
   }
 }

@@ -28,6 +28,7 @@ class BlogProfileController extends BaseController {
   async follow(ctx) {
     const { id: myUserId } = ctx.session.userInfo;
     const { userId: curUserId } = ctx.request.body;
+    
     try {
       const followResult = await userRelationService.addFollower(myUserId, curUserId);
       // console.log('关注结果:', followResult);
@@ -44,6 +45,7 @@ class BlogProfileController extends BaseController {
   async unFollow(ctx) {
     const { id: myUserId } = ctx.session.userInfo;
     const { userId: curUserId } = ctx.request.body;
+
     try {
       await userRelationService.delFollower(myUserId, curUserId);
       super.resSuccess(ctx);

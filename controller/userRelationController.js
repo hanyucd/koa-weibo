@@ -13,8 +13,6 @@ class userRelationController extends BaseController {
    */
   async getFans(userId) {
     const { count, userList } = await userRelationService.getUsersByFollower(userId);
-    console.log('粉丝:', userList);
-    
     return { count, userList };
   }
 }

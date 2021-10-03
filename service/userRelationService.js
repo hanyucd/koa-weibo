@@ -26,13 +26,36 @@ class userRelationService {
     });
     // result.count 总数
     // result.rows 查询结果，数组
-    console.log('关注者结果:', flllowerResult);
+    // console.log('关注者结果:', flllowerResult);
 
     // 格式化
     let userList = flllowerResult.rows.map(row => row.dataValues)
     userList = formatUtil.formatUser(userList)
 
     return { count: flllowerResult.count, userList };
+  }
+
+  // 添加关注关系
+  async addFollower(userId, followerId) {
+    const result = await userRelationModel.create({
+      userId,
+      followerId
+    });
+    // console.log('关注关系:', result);
+
+    return result.toJSON();
+  }
+
+  // 删除关注关系
+  async delFollower(userId, followerId) {
+    const destroy =  await userRelationModel.destroy({
+      where: {
+        userId,
+        followerId
+      }
+    });
+    console.log('删除:', destroy);
+    return destroy;
   }
 }
 

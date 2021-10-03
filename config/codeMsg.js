@@ -25,4 +25,9 @@ module.exports = {
   createBlogError: { code: 11001, message: '创建微博失败，请重试', },
   // 删除微博失败
   deleteBlogError: { code: 11002, message: '删除微博失败，请重试', },
+
+  // 添加关注失败
+  addFollowerError: { code: 10011, message: '添加关注失败', },
+  // 取消关注失败
+  delFollowerError: { code: 10012, message: '取消关注失败', },
 };

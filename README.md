@@ -1,4 +1,4 @@
-# 一个简易微博项目
+# 一个简易微博博客项目
 
 koa + ejs + redis + mysql + sequelize
 

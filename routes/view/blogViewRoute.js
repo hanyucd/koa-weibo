@@ -58,6 +58,11 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   
   // ctx.body = { fansResult };
   // return;
+
+  // 遍历粉丝列表看看其中有没有我 我是否关注了此人？
+  const amIFollowed = fansList.some(item => {
+    return item.userName === myUserInfo.userName;
+  });
   
   await ctx.render('profile', {
     blogData: {
@@ -68,7 +73,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
       pageSize
     },
     userData: {
-      userInfo: myUserInfo,
+      userInfo: curUserInfo,
       isMe,
       fansData: {
         count: fansCount,
@@ -78,6 +83,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
         count: 0,
         list: []
       },
+      amIFollowed
     }
   })
 });

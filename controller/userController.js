@@ -1,4 +1,5 @@
 const userService = require('../service/userService');
+const userRelationService = require('../service/userRelationService');
 const BaseController = require('./baseController');
 const codeMsg = require('../config/codeMsg');
 
@@ -99,6 +100,20 @@ class UserController extends BaseController {
     // 移除 session
     delete ctx.session.userInfo;
     super.resSuccess(ctx);
+  }
+
+  /**
+   * 获取 at 列表
+   */
+  async getAtList(ctx) {
+    const { id: myUserId } = ctx.session.userInfo;
+
+    const { count, followList } = await userRelationService.getFollowersByUser(myUserId);
+    const list = followList.map(follower => {
+      return `${ follower.nickName }-${ follower.userName }`;
+    });
+
+    ctx.body = list;
   }
 }
 

@@ -1,9 +1,11 @@
 const Router = require('@koa/router');
-const router = new Router({ prefix: '/api/user' });
 const validateMiddleware = require('../../middleware/validateMiddleware');
 const userValidate = require('../../validator/userValidate');
 const userController = require('../../controller/userController');
 const { loginCheck } = require('../../middleware/loginCheckMiddleware');
+
+
+const router = new Router({ prefix: '/api/user' });
 
 // 用户名是否存在
 router.post('/isExist', userController.isExist);
@@ -17,5 +19,7 @@ router.patch('/changeInfo', loginCheck, validateMiddleware(userValidate), userCo
 router.patch('/changePassword', loginCheck, validateMiddleware(userValidate), userController.changeUserPassword);
 // 退出登录
 router.post('/logout', loginCheck, userController.logout);
+// at 用户列表
+router.get('/getAtList', loginCheck, userController.getAtList);
 
 module.exports = router;

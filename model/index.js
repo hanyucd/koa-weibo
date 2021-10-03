@@ -11,10 +11,16 @@ blogModel.belongsTo(userModel, {
 userRelationModel.belongsTo(userModel, {
   foreignKey: 'followerId',
 });
-// 一个用户有很多的 用户关系 如我关注了x，y关注了我 userRelation.userId（外键）关联 = user.id
+// 一个用户有很多的 用户关系 如我关注了x，y关注了我 userRelation.userId（外键）关联= user.id
 userModel.hasMany(userRelationModel, {
   foreignKey: 'userId'
 });
+
+// 完成博客与用户关系的连接  blog.userId 关联= userRelation.followerId
+blogModel.belongsTo(userRelationModel, {
+  foreignKey: 'userId',
+  targetKey: 'followerId'
+})
 
 module.exports = {
   userModel,

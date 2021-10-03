@@ -26,6 +26,16 @@ class BlogHomeController extends BaseController {
       return super.resFail(ctx, codeMsg.createBlogError);
     }
   }
+
+  /**
+   * 获取首页微博列表
+   * @param {number} userId userId
+   * @param {number} pageIndex page index
+   */
+  async getHomeBlog(userId, pageIndex = 0) {
+    const blogResult = await blogService.getFollowersBlogListByUser({ userId, pageIndex });
+    return blogResult;
+  }
 }
 
 module.exports = new BlogHomeController();

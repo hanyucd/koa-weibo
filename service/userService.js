@@ -2,6 +2,7 @@ const { userModel } = require('../model');
 const formatUtil = require('../utils/formatUtil');
 const passwdUtil = require('../utils/passwdUtil');
 const codeMsg = require('../config/codeMsg');
+const userRelationService = require('./userRelationService');
 
 class UserService {  
   /**
@@ -54,7 +55,10 @@ class UserService {
       nickName: nickName || '_三眼神将'
     });
     
-    console.log('新用户 id', userResult.id);
+    // 创建用户后 自己关注自己
+    userRelationService.addFollower(userResult.id, userResult.id);
+    
+    // console.log('新用户 id', userResult.id);
     return userResult.toJSON();
   }
 

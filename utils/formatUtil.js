@@ -55,7 +55,7 @@ const _formateContent = obj => {
  * 批量或者单个更新blog的信息
  * @param {Object|Array} list
  */
-const fromateBlog = list => {
+const formatBlog = list => {
   if (!list) return null;
 
   if (Array.isArray(list)) return list.map(_formatDBTime).map(_formateContent);
@@ -65,4 +65,4 @@ const fromateBlog = list => {
   return res;
 };
 
-module.exports = { formatUser, fromateBlog };
+module.exports = { formatUser, formatBlog };

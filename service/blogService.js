@@ -1,4 +1,4 @@
-const { blogModel, userModel } = require('../model');
+const { blogModel, userModel, userRelationModel } = require('../model');
 const formatUtil = require('../utils/formatUtil');
 const PAGE_SIZE = 5; // 一页数据
 
@@ -31,16 +31,16 @@ class blogService {
     if (userName) userWhereObj.userName = userName;
 
     const result = await blogModel.findAndCountAll({
+      order: [['create_time', 'desc']], // 创建时间 倒序
+      offset: PAGE_SIZE * pageIndex, // 跳过多少条
+      limit: PAGE_SIZE, // 每页多少条
       include: [
         {
           model: userModel,
           attributes: [ 'userName', 'nickName', 'picture' ],
           where: userWhereObj // inner join
         }
-      ],
-      order: [['create_time', 'desc']], // 创建时间 倒序
-      offset: PAGE_SIZE * pageIndex, // 跳过多少条
-      limit: PAGE_SIZE, // 每页多少条
+      ]
     });
     // result.count 总数，跟分页无关
     // result.rows 查询结果，数组
@@ -52,7 +52,7 @@ class blogService {
       return blogItem;
     });
     // 格式化微博数据
-    blogList = formatUtil.fromateBlog(blogList);
+    blogList = formatUtil.formatBlog(blogList);
     // console.log('blogList:', blogList);
 
     return {
@@ -62,6 +62,45 @@ class blogService {
       pageIndex,
       pageSize: PAGE_SIZE
     }
+  }
+
+  /**
+   * 根据用户 获取该用户关注的所有人的微博
+   * @param {Number} userId 用户ID
+   */
+  async getFollowersBlogListByUser({ userId, pageIndex = 0 }) {
+    const result = await blogModel.findAndCountAll({
+      order: [['create_time', 'desc']], // 创建时间 倒序
+      offset: pageIndex * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      include: [
+        {
+          model: userModel,
+          attributes: [ 'userName', 'nickName', 'picture' ],
+        },
+        {
+          model: userRelationModel,
+          attributes: ['userId', 'followerId'],
+          // where: { userId }
+        }
+      ]
+    });
+
+    let blogList = result.rows.map(row => row.dataValues);
+    blogList = formatUtil.formatBlog(blogList);
+    blogList.map(item => {
+      let user = item.user.dataValues;
+      item.user = formatUtil.formatUser(user);
+      return item;
+    });
+
+    return {
+      isEmpty: result.count === 0, 
+      count: result.count,
+      blogList,
+      pageIndex,
+      pageSize: PAGE_SIZE
+    };
   }
 }
 

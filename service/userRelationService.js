@@ -24,8 +24,6 @@ class userRelationService {
         [ userRelationModel, 'create_time', 'desc' ]
       ],
     });
-    // result.count 总数
-    // result.rows 查询结果，数组
     // console.log('关注者结果:', fansResult);
 
     // 格式化

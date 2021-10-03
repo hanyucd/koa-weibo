@@ -29,5 +29,4 @@ class BlogHomeController extends BaseController {
   }
 }
 
-
 module.exports = new BlogHomeController();

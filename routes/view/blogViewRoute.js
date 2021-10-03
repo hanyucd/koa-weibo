@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const { loginRedirect }  = require('../../middleware/loginCheckMiddleware');
+const blogService = require('../../service/blogService');
 const router = new Router();
 
 /**
@@ -16,6 +17,39 @@ router.get('/', loginRedirect, async (ctx, next) => {
       userInfo: myUserInfo
     }
   });
-})
+});
+
+/**
+ * 访问自己主页
+ */
+router.get('/profile', loginRedirect, async (ctx, next) => {
+  const { userName } = ctx.session.userInfo;
+  ctx.redirect(`/profile/${ userName }`);
+});
+
+/**
+ * 访问个人主页
+ */
+router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
+  const myUserInfo = ctx.session.userInfo; // 我自己
+  const { userName: curUserName } = ctx.params; // ta 人用户名
+  const isMe = curUserName === myUserInfo.userName;
+  // 获取第一页的数据
+  const blogResult = await blogService.getBlogListByUser(curUserName);
+  const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult;
+  
+  await ctx.render('profile', {
+    blogData: {
+      isEmpty,
+      blogList,
+      count,
+      pageIndex,
+      pageSize
+    },
+    userData: {
+      userInfo: myUserInfo
+    }
+  })
+});
 
 module.exports = router;

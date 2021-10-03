@@ -1,7 +1,6 @@
 const BaseController = require('./baseController');
 const blogService = require('../service/blogService');
 const codeMsg = require('../config/codeMsg');
-const blogValidate = require('../validator/blogValidate');
 const xss = require('xss');
 
 class BlogHomeController extends BaseController {

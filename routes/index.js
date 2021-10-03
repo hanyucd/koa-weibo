@@ -6,6 +6,7 @@ const userApiRoute = require('./api/userRoute');
 const utilApiRoute = require('./api/utilRoute');
 const blogHomeApiRoute = require('./api/blogHomeRoute');
 const blogProfileApiRoute = require('./api/blogProfileRoute');
+const blogSquareAPiRoute = require('./api/blogSquareRoute');
 
 // view
 const errorViewRoute = require('./view/errorViewRoute');
@@ -18,6 +19,7 @@ module.exports = app => {
   router.use(utilApiRoute.routes());
   router.use(blogHomeApiRoute.routes());
   router.use(blogProfileApiRoute.routes());
+  router.use(blogSquareAPiRoute.routes());
 
   // view
   router.use(userViewRoute.routes());

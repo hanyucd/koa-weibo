@@ -2,7 +2,7 @@ const { DEFAULT_PICTURE_URL } = require('../config/const');
 const { timeFormat } = require('./dateTimeUtil');
 
 // 微博内容 @nickName - userName的正则检测
-const REF_FOR_AT_WHO = /@(.+?)-(\w+?)\b/g
+const REF_FOR_AT_WHO = /@(.+?)-(\w+?)\b/g;
 
 /**
  * 当 picture 为空的时候自动赋能
@@ -26,7 +26,7 @@ const formatUser = user => {
 };
 
 /**
- * 格式化数据的时间
+ * 格式化时间数据
  * @param {Object} obj 数据
  */
 const _formatDBTime = obj => {
@@ -42,6 +42,9 @@ const _formatDBTime = obj => {
  */
 const _formateContent = obj => {
   obj.contentFormat = obj.content;
+  // 格式化 @ 使用户可被点击
+  // from '哈喽 @张三 - zhangsan 你好' 
+  // to '哈喽 <a href="/profile/zhangsan">张三</a> 你好'
   obj.contentFormat = obj.contentFormat.replace(REF_FOR_AT_WHO, (matchStr, nickName, userName) => {
     return `<a href="/profile/${userName}">@${nickName}</a>`;
   });

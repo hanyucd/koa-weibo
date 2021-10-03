@@ -35,19 +35,15 @@ class blogService {
         {
           model: userModel,
           attributes: [ 'userName', 'nickName', 'picture' ],
-          // inner join
-          where: userWhereObj
+          where: userWhereObj // inner join
         }
       ],
       order: [['id', 'desc']], // id 倒序
       offset: PAGE_SIZE * pageIndex, // 跳过多少条
       limit: PAGE_SIZE, // 每页多少条
     });
-    // console.log('result:', result);
-
     // result.count 总数，跟分页无关
     // result.rows 查询结果，数组
-
     let blogList = result.rows.map(row => row.dataValues);
 
     blogList = blogList.map(blogItem => {
@@ -55,9 +51,9 @@ class blogService {
       blogItem.user = formatUtil.formatUser(user);
       return blogItem;
     });
-
+    // 格式化微博数据
     blogList = formatUtil.fromateBlog(blogList);
-    console.log('blogList:', blogList);
+    // console.log('blogList:', blogList);
 
     return {
       isEmpty: result.count === 0, 

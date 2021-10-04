@@ -95,6 +95,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
   const amIFollowed = fansList.some(item => {
     return item.userName === myUserInfo.userName;
   });
+
+  // 获取 @ 数量
+  let atCountResult = 0;
+  if (isMe) atCountResult = await atRelationController.getAtMeCount(myUserInfo.id);
   
   await ctx.render('profile', {
     blogData: {
@@ -107,6 +111,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     userData: {
       userInfo: curUserInfo,
       isMe,
+      atCount: atCountResult,
       amIFollowed,
       fansData: {
         count: fansCount,
@@ -136,6 +141,34 @@ router.get('/square', loginRedirect, async (ctx, next) => {
       pageSize,
     },
   });
+});
+
+/**
+ * 访问 atMe
+ */
+router.get('/at-me', loginRedirect, async (ctx, next) => {
+  const userId = ctx.session.userInfo.id;
+  
+  // 获取第一页的数据
+  const blogResult = await atRelationController.getAtMeBlog(userId);
+  const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult;
+
+  // 获取 @ 数量
+  const atCountResult = await atRelationController.getAtMeCount(userId);
+  
+  await ctx.render('atMe', {
+    atCount: atCountResult,
+    blogData: {
+      isEmpty,
+      blogList,
+      count,
+      pageIndex,
+      pageSize,
+    },
+  });
+
+  // 进入atMe页面后 该页面的数据标记为已读
+  if (atCountResult) await atRelationController.markAsRead(userId);
 });
 
 module.exports = router;

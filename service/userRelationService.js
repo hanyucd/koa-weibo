@@ -1,4 +1,4 @@
-const { userRelationModel, userModel } = require('../model');
+const { userRelationModel, userModel, atRelationModel } = require('../model');
 const { Op } = require('sequelize');
 const formatUtil = require('../utils/formatUtil');
 

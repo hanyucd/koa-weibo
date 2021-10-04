@@ -2,7 +2,7 @@ const Koa = require('koa');
 const app = new Koa();
 const views = require('koa-views'); // 动态模板渲染引擎
 const json = require('koa-json');
-const onerror = require('koa-onerror');
+const onerror = require('koa-onerror'); // 全局错误处理中间件
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const session = require('koa-generic-session');
@@ -55,6 +55,10 @@ app.use(async (ctx, next) => {
 
 // routes 注册路由
 routes(app);
+
+// 获取当前启动时候的环境
+const ENV = process.env.NODE_ENV;
+console.log('环境变量：', ENV);
 
 // error-handling
 app.on('error', (err, ctx) => {

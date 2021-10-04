@@ -1,6 +1,11 @@
 const userModel = require('./userModel');
 const blogModel = require('./blogModel');
 const userRelationModel = require('./userRelationModel');
+const atRelationModel = require('./atRelationModel');
+
+/**
+ * 建立表关系
+ */
 
 // 一对一的关系, 外键在源模型中定义（blogModel）| 一个用户有多个博客 User.id 关联 = Blog.userId（外键）
 blogModel.belongsTo(userModel, {
@@ -20,10 +25,16 @@ userModel.hasMany(userRelationModel, {
 blogModel.belongsTo(userRelationModel, {
   foreignKey: 'userId',
   targetKey: 'followerId'
-})
+});
+
+// 一条博客可能有很多at关系  Blog.id 关联 = AtRelation.blogId（外键）
+blogModel.hasMany(atRelationModel, {
+  foreignKey: 'blogId'
+});
 
 module.exports = {
   userModel,
   blogModel,
-  userRelationModel
+  userRelationModel,
+  atRelationModel
 };

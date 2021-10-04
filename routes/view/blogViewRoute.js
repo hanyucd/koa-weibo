@@ -4,6 +4,7 @@ const blogService = require('../../service/blogService');
 const blogSquareController = require('../../controller/blogSquareController');
 const userRelationController = require('../../controller/userRelationController');
 const blogHomeController = require('../../controller/blogHomeController');
+const atRelationController = require('../../controller/atRelationController');
 const userService = require('../../service/userService');
 const router = new Router();
 
@@ -13,7 +14,6 @@ const router = new Router();
 router.get('/', loginRedirect, async (ctx, next) => {
   const myUserInfo = ctx.session.userInfo;
   const userId = myUserInfo.id;
-  
 
   // 获取粉丝列表
   const fansResult = await userRelationController.getFans(userId);
@@ -27,6 +27,9 @@ router.get('/', loginRedirect, async (ctx, next) => {
   const blogResult = await blogHomeController.getHomeBlog(userId);
   const { isEmpty, blogList, count, pageIndex, pageSize } = blogResult;
   
+  // 获取 @ 数量
+  const atCountResult = await atRelationController.getAtMeCount(userId);
+  
   await ctx.render('index', {
     blogData: {
       isEmpty,
@@ -37,6 +40,7 @@ router.get('/', loginRedirect, async (ctx, next) => {
     },
     userData: {
       userInfo: myUserInfo,
+      atCount: atCountResult,
       fansData: {
         count: fansCount,
         list: fansList

@@ -6,7 +6,8 @@ koa + ejs + redis + mysql + sequelize
 - koa-generic-session + koa-redis session 会话操作
 - 项目结构 MVC
 - koa 获取 post 参数 (安装 koa-bodyparser 插件, 通过 ctx.request.body 获取参数)
-- ajv (Node.js和浏览器中最快速的 JSON Schema验证器) 验证路由参数
+- ajv (Node.js和浏览器中最快速的 JSON Schema验证器) 验证路由参数（validator）
+- Sequelize(orm) 操作 mysql 数据库（model）
 - 文件上传 file（formidable-upload-koa & fs-extra ）
 - Eslint 代码格式检查
 

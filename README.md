@@ -3,20 +3,23 @@
 koa + ejs + redis + mysql + sequelize
 
 - 项目使用 koa 脚手架工具：koa-generator 生成基本结构
-- koa-generic-session +  koa-redis session 会话操作
+- koa-generic-session + koa-redis session 会话操作
 - 项目结构 MVC
 - koa 获取 post 参数 (安装 koa-bodyparser 插件, 通过 ctx.request.body 获取参数)
 - ajv (Node.js和浏览器中最快速的 JSON Schema验证器) 验证路由参数
 - 文件上传 file（formidable-upload-koa & fs-extra ）
+- Eslint 代码格式检查
 
 ## 分层架构设计
 
 - 视图层：SSR渲染呈现页面 和 页面请求 API 接口
 - 路由层：view渲染、API处理、校验请求
 - 控制层：实现基本业务逻辑、用户校验与返回数据格式
-- 缓存层：实现 redis 和 mysql数据库之间对数据的是否缓存
+- 缓存层：实现 redis 和 mysql 数据库之间对数据的是否缓存
 - 数据层：对数据库的增删改查操作，最后返回数据实体对象
 - 封装层：使用 Sequelize 对数据层进行封装操作
+
+![image](./public/img/mvc.png)
 
 ## Sequelize(ORM) 连接 MySQL
 
